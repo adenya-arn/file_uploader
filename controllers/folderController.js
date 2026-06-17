@@ -29,3 +29,23 @@ export async function createFolderPost(req, res) {
 
   res.redirect("/folders");
 }
+
+export async function folderDetailsGet(req, res) {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: Number(req.params.id),
+    },
+
+    include: {
+      files: true,
+    },
+  });
+
+  if (!folder) {
+    return res.redirect("/folders");
+  }
+
+  res.render("folder", {
+    folder,
+  });
+}

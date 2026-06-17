@@ -1,59 +1,61 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-  <title>My Folders</title>
-  <link rel="stylesheet" href="/styles.css">
+
+<title>My Folders</title>
+
+<link rel="stylesheet" href="/styles.css">
+
 </head>
+
 <body>
 
 <div class="container">
 
-  <div class="page-header">
+<div class="page-header">
 
-    <h1 class="page-title">
-      My Folders
-    </h1>
+<h1 class="page-title">
 
-    <a
-      class="btn"
-      href="/folders/new"
-    >
-      New Folder
-    </a>
+My Folders
 
-  </div>
+</h1>
 
-  <div class="folder-grid">
+<a class="btn" href="/folders/new">
 
-    <% folders.forEach(folder => { %>
+New Folder
 
-      <div class="card folder-card">
+</a>
 
-        <h3>
-          <%= folder.name %>
-        </h3>
+</div>
 
-        <a
-          class="btn"
-          href="/folders/<%= folder.id %>"
-        >
-          Open
-        </a>
+<div class="folder-grid">
 
-        <a
-         class="btn"
-         href="/files/<%= file.id %>"
-        >
-            View Details
-        </a>
+<% folders.forEach(folder => { %>
 
-      </div>
+<div class="card folder-card">
 
-    <% }) %>
+<h3>
 
-  </div>
+<%= folder.name %>
+
+</h3>
+
+<a class="btn" href="/folders/<%= folder.id %>">
+
+Open
+
+</a>
+
+</div>
+
+<% }) %>
+
+</div>
 
 </div>
 
 </body>
+
 </html>

@@ -22,9 +22,8 @@
 
           <p>
             <strong>Uploaded By:</strong>
-            <%= file.user.firstName %>
+            <%= file.user.firstName %> <%= file.user.lastName %>
           </p>
-
           <p>
             <strong>Size:</strong>
             <%= file.size %> bytes
@@ -33,6 +32,12 @@
           <p>
             <strong>Uploaded:</strong>
             <%= file.createdAt.toLocaleString() %>
+          </p>
+
+          <p>
+            <a class="btn" href="/files/<%= file.id %>/download">
+              Download File
+            </a>
           </p>
         </div>
       </div>

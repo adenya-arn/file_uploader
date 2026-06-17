@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Upload File</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card form-card">
+        <h1 class="page-title">Upload File</h1>
+
+        <form
+          class="form"
+          action="/folders/<%= folderId %>/upload"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group">
+            <label> Choose File </label>
+
+            <input type="file" name="file" required />
+          </div>
+
+          <button class="btn" type="submit">Upload</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= folder.name %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+
+    <h1 class="page-title">
+      <%= folder.name %>
+    </h1>
+
+    <a
+        class="btn"
+        href="/folders/<%= folder.id %>/upload"
+    >
+    Upload File
+    </a>
+
+    <a
+      class="btn"
+      href="/folders"
+    >
+      Back
+    </a>
+
+  </div>
+
+  <div class="file-grid">
+
+    <% if (folder.files.length === 0) { %>
+
+      <p>No files uploaded yet.</p>
+
+    <% } %>
+
+    <% folder.files.forEach(file => { %>
+
+      <div class="card file-card">
+
+        <h3><%= file.name %></h3>
+
+        <a
+          class="btn"
+          href="/files/<%= file.id %>"
+        >
+          View Details
+        </a>
+
+      </div>
+
+    <% }) %>
+
+  </div>
+
+</div>
+
+</body>
+</html>
