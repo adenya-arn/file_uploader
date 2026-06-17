@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Uploader</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <% if (currentUser) { %>
+
+    <div class="card">
+
+      <h1 class="page-title">
+        Welcome
+        <%= currentUser.firstName %>
+      </h1>
+
+      <div class="actions">
+
+        <a
+          class="btn"
+          href="/folders"
+        >
+          My Folders
+        </a>
+
+        <a
+          class="btn btn-danger"
+          href="/logout"
+        >
+          Logout
+        </a>
+
+      </div>
+
+    </div>
+
+  <% } else { %>
+
+    <div class="card">
+
+      <h1 class="page-title">
+        File Uploader
+      </h1>
+
+      <p class="subtitle">
+        Store and organize your files.
+      </p>
+
+      <div class="actions">
+
+        <a
+          class="btn"
+          href="/login"
+        >
+          Login
+        </a>
+
+        <a
+          class="btn"
+          href="/sign-up"
+        >
+          Sign Up
+        </a>
+
+      </div>
+
+    </div>
+
+  <% } %>
+
+</div>
+
+</body>
+</html>

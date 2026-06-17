@@ -69,3 +69,7 @@ export const signUpPost = [
     res.redirect("/login");
   },
 ];
+
+export function loginGet(req, res) {
+  res.render("login");
+}
