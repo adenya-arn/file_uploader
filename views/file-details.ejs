@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Details</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1 class="page-title">File Details</h1>
+
+        <div class="file-details">
+          <p>
+            <strong>Name:</strong>
+            <%= file.filename %>
+          </p>
+
+          <p>
+            <strong>Folder:</strong>
+            <%= file.folder.name %>
+          </p>
+
+          <p>
+            <strong>Uploaded By:</strong>
+            <%= file.user.firstName %>
+          </p>
+
+          <p>
+            <strong>Size:</strong>
+            <%= file.size %> bytes
+          </p>
+
+          <p>
+            <strong>Uploaded:</strong>
+            <%= file.createdAt.toLocaleString() %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
