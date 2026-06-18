@@ -13,6 +13,7 @@ import {
   folderDetailsGet,
   editFolderGet,
   editFolderPost,
+  deleteFolderPost,
 } from "../controllers/folderController.js";
 
 import {
@@ -65,6 +66,8 @@ router.get("/folders/:id/edit", isAuthenticated, editFolderGet);
 router.post("/folders/:id/edit", isAuthenticated, editFolderPost);
 
 router.post("/files/:id/delete", isAuthenticated, deleteFilePost);
+
+router.post("/folders/:id/delete", isAuthenticated, deleteFolderPost);
 
 // router.get("/folders/:id", (req, res) => {
 //   res.send(`Folder ID: ${req.params.id}`);

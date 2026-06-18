@@ -55,6 +55,20 @@ Open
   Edit
 </a>
 
+<form
+  action="/folders/<%= folder.id %>/delete"
+  method="POST"
+>
+
+  <button
+    class="btn btn-danger"
+    type="submit"
+  >
+    Delete Folder
+  </button>
+
+</form>
+
 </div>
 
 <% }) %>

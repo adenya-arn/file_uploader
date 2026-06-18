@@ -16,7 +16,9 @@ export async function foldersGet(req, res) {
 }
 
 export function createFolderGet(req, res) {
-  res.render("folder-form");
+  res.render("folder-form", {
+    folder: null,
+  });
 }
 
 export async function createFolderPost(req, res) {
