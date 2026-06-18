@@ -1,6 +1,7 @@
 import prisma from "../db/prisma.js";
 import path from "node:path";
 import multer from "multer";
+import fs from "node:fs";
 
 export async function getFileById(id) {
   return prisma.file.findUnique({
@@ -55,8 +56,34 @@ const storage = multer.diskStorage({
   },
 });
 
+// ////////This gives:
+
+// Maximum size = 5 MB
+// JPG allowed
+// PNG allowed
+// PDF allowed
+// TXT allowed//////
 export const upload = multer({
   storage,
+
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+
+  fileFilter(req, file, cb) {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+      "text/plain",
+    ];
+
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only JPG, PNG, PDF and TXT files are allowed"));
+    }
+  },
 });
 
 export function uploadFileGet(req, res) {
@@ -77,4 +104,30 @@ export async function uploadFilePost(req, res) {
   });
 
   res.redirect(`/folders/${req.params.id}`);
+}
+
+export async function deleteFilePost(req, res) {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: Number(req.params.id),
+    },
+  });
+
+  if (!file) {
+    return res.redirect("/folders");
+  }
+
+  try {
+    fs.unlinkSync(file.fileUrl);
+  } catch (err) {
+    console.log("Physical file already missing");
+  }
+
+  await prisma.file.delete({
+    where: {
+      id: Number(req.params.id),
+    },
+  });
+
+  res.redirect(`/folders/${file.folderId}`);
 }

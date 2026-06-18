@@ -11,9 +11,14 @@ import {
   createFolderGet,
   createFolderPost,
   folderDetailsGet,
+  editFolderGet,
+  editFolderPost,
 } from "../controllers/folderController.js";
 
-import { fileDetailsGet } from "../controllers/fileController.js";
+import {
+  fileDetailsGet,
+  deleteFilePost,
+} from "../controllers/fileController.js";
 
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 
@@ -54,6 +59,12 @@ router.post(
 router.get("/files/:id", isAuthenticated, fileDetailsGet);
 
 router.get("/files/:id/download", isAuthenticated, downloadFile);
+
+router.get("/folders/:id/edit", isAuthenticated, editFolderGet);
+
+router.post("/folders/:id/edit", isAuthenticated, editFolderPost);
+
+router.post("/files/:id/delete", isAuthenticated, deleteFilePost);
 
 // router.get("/folders/:id", (req, res) => {
 //   res.send(`Folder ID: ${req.params.id}`);

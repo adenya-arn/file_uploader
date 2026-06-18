@@ -39,6 +39,10 @@
               Download File
             </a>
           </p>
+
+          <form action="/files/<%= file.id %>/delete" method="POST">
+            <button class="btn btn-danger" type="submit">Delete File</button>
+          </form>
         </div>
       </div>
     </div>

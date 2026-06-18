@@ -49,3 +49,60 @@ export async function folderDetailsGet(req, res) {
     folder,
   });
 }
+
+export async function editFolderGet(req, res) {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: Number(req.params.id),
+    },
+  });
+
+  res.render("folder-form", {
+    folder,
+  });
+}
+
+export async function editFolderPost(req, res) {
+  await prisma.folder.update({
+    where: {
+      id: Number(req.params.id),
+    },
+    data: {
+      name: req.body.name,
+    },
+  });
+
+  res.redirect("/folders");
+}
+
+export async function deleteFolderPost(req, res) {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: Number(req.params.id),
+    },
+
+    include: {
+      files: true,
+    },
+  });
+
+  if (!folder) {
+    return res.redirect("/folders");
+  }
+
+  for (const file of folder.files) {
+    await prisma.file.delete({
+      where: {
+        id: file.id,
+      },
+    });
+  }
+
+  await prisma.folder.delete({
+    where: {
+      id: folder.id,
+    },
+  });
+
+  res.redirect("/folders");
+}
