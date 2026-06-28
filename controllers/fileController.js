@@ -1,7 +1,8 @@
 import prisma from "../db/prisma.js";
 import path from "node:path";
 import multer from "multer";
-import fs from "node:fs";
+// import fs from "node:fs";
+import cloudinary from "../config/cloudinary.js";
 
 export async function getFileById(id) {
   return prisma.file.findUnique({
@@ -43,7 +44,7 @@ export async function downloadFile(req, res) {
 
   const filePath = path.join(process.cwd(), file.fileUrl);
 
-  res.download(filePath, file.name);
+  res.redirect(file.fileUrl);
 }
 
 const storage = multer.diskStorage({
@@ -92,18 +93,48 @@ export function uploadFileGet(req, res) {
   });
 }
 
-export async function uploadFilePost(req, res) {
-  await prisma.file.create({
-    data: {
-      name: req.file.originalname,
-      fileUrl: req.file.path,
-      size: req.file.size,
-      folderId: Number(req.params.id),
-      userId: req.user.id,
-    },
-  });
+// export async function uploadFilePost(req, res) {
+//   const result = await cloudinary.uploader.upload(req.file.path);
 
-  res.redirect(`/folders/${req.params.id}`);
+//   await prisma.file.create({
+//     data: {
+//       name: req.file.originalname,
+//       fileUrl: result.secure_url,
+//       size: req.file.size,
+//       folderId: Number(req.params.id),
+//       userId: req.user.id,
+//     },
+//   });
+
+//   res.redirect(`/folders/${req.params.id}`);
+// }
+
+export async function uploadFilePost(req, res) {
+  try {
+    console.log("1. Request received");
+
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    console.log("2. Uploaded to Cloudinary");
+    console.log(result.secure_url);
+
+    await prisma.file.create({
+      data: {
+        name: req.file.originalname,
+        fileUrl: result.secure_url,
+        size: req.file.size,
+        folderId: Number(req.params.id),
+        userId: req.user.id,
+      },
+    });
+
+    console.log("3. Saved to database");
+
+    res.redirect(`/folders/${req.params.id}`);
+  } catch (err) {
+    console.error(err);
+    res.send(err);
+  }
 }
 
 export async function deleteFilePost(req, res) {
@@ -117,11 +148,11 @@ export async function deleteFilePost(req, res) {
     return res.redirect("/folders");
   }
 
-  try {
-    fs.unlinkSync(file.fileUrl);
-  } catch (err) {
-    console.log("Physical file already missing");
-  }
+  // try {
+  //   fs.unlinkSync(file.fileUrl);
+  // } catch (err) {
+  //   console.log("Physical file already missing");
+  // }
 
   await prisma.file.delete({
     where: {

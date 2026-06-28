@@ -1,4 +1,4 @@
-import prisma from "../db/prisma.js";
+import prisma from "../../db/prisma.js";
 
 export async function foldersGet(req, res) {
   const folders = await prisma.folder.findMany({
