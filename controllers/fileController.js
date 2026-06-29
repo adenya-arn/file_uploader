@@ -77,6 +77,7 @@ export const upload = multer({
       "image/png",
       "application/pdf",
       "text/plain",
+      "pdf",
     ];
 
     if (allowedTypes.includes(file.mimetype)) {
@@ -93,49 +94,49 @@ export function uploadFileGet(req, res) {
   });
 }
 
-// export async function uploadFilePost(req, res) {
-//   const result = await cloudinary.uploader.upload(req.file.path);
-
-//   await prisma.file.create({
-//     data: {
-//       name: req.file.originalname,
-//       fileUrl: result.secure_url,
-//       size: req.file.size,
-//       folderId: Number(req.params.id),
-//       userId: req.user.id,
-//     },
-//   });
-
-//   res.redirect(`/folders/${req.params.id}`);
-// }
-
 export async function uploadFilePost(req, res) {
-  try {
-    console.log("1. Request received");
+  const result = await cloudinary.uploader.upload(req.file.path);
 
-    const result = await cloudinary.uploader.upload(req.file.path);
+  await prisma.file.create({
+    data: {
+      name: req.file.originalname,
+      fileUrl: result.secure_url,
+      size: req.file.size,
+      folderId: Number(req.params.id),
+      userId: req.user.id,
+    },
+  });
 
-    console.log("2. Uploaded to Cloudinary");
-    console.log(result.secure_url);
-
-    await prisma.file.create({
-      data: {
-        name: req.file.originalname,
-        fileUrl: result.secure_url,
-        size: req.file.size,
-        folderId: Number(req.params.id),
-        userId: req.user.id,
-      },
-    });
-
-    console.log("3. Saved to database");
-
-    res.redirect(`/folders/${req.params.id}`);
-  } catch (err) {
-    console.error(err);
-    res.send(err);
-  }
+  res.redirect(`/folders/${req.params.id}`);
 }
+
+// export async function uploadFilePost(req, res) {
+//   try {
+//     console.log("1. Request received");
+
+//     const result = await cloudinary.uploader.upload(req.file.path);
+
+//     console.log("2. Uploaded to Cloudinary");
+//     console.log(result.secure_url);
+
+//     await prisma.file.create({
+//       data: {
+//         name: req.file.originalname,
+//         fileUrl: result.secure_url,
+//         size: req.file.size,
+//         folderId: Number(req.params.id),
+//         userId: req.user.id,
+//       },
+//     });
+
+//     console.log("3. Saved to database");
+
+//     res.redirect(`/folders/${req.params.id}`);
+//   } catch (err) {
+//     console.error(err);
+//     res.send(err);
+//   }
+// }
 
 export async function deleteFilePost(req, res) {
   const file = await prisma.file.findUnique({
